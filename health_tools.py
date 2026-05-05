@@ -4,7 +4,9 @@ import json
 import os
 
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-CSV_PATH = "/Users/jingqin/AI/减肥.csv"
+_real_csv = "/Users/jingqin/AI/减肥.csv"
+_sample_csv = os.path.join(os.path.dirname(__file__), "sample_health.csv")
+CSV_PATH = _real_csv if os.path.exists(_real_csv) else _sample_csv
 
 # ── 工具函数 ─────────────────────────────────────────────────
 

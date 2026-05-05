@@ -7,8 +7,13 @@ from health_tools import read_csv, get_statistics, get_trend, get_bmi, get_waist
 import doc_tools as rag_demo
 
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-DOC_PATH = "/Users/jingqin/AI/Interview prepare.txt"
-MEMORY_PATH = "/Users/jingqin/AI/学习计划/memory.json"
+
+# 本地有真实文件就用真实文件，否则用样本文件
+_real_doc = "/Users/jingqin/AI/Interview prepare.txt"
+_sample_doc = os.path.join(os.path.dirname(__file__), "sample_document.txt")
+DOC_PATH = _real_doc if os.path.exists(_real_doc) else _sample_doc
+
+MEMORY_PATH = os.path.join(os.path.dirname(__file__), "memory.json")
 
 # ── 记忆：读写本地文件 ────────────────────────────────────────
 

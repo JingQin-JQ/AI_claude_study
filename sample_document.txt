@@ -1,0 +1,26 @@
+Self Introduction - Alex Chen, Data Scientist
+
+I am a Data Scientist with 4 years of experience building end-to-end machine learning solutions. I currently work at a financial services company where I lead a team of 3 data scientists.
+
+Key Projects:
+
+1. Customer Churn Prediction
+Built an XGBoost model to predict customer churn with 85% accuracy. The model processes 2M+ customer records monthly and has reduced churn by 15%, saving the company $2M annually. Deployed using Docker and a REST API built with FastAPI.
+
+2. Fraud Detection System
+Developed a real-time fraud detection pipeline processing 5M+ daily transactions. Generated 150+ features from transaction history. Reduced false positives by 25% compared to the previous rule-based system, saving 50 FTE hours per week.
+
+3. Product Recommendation Engine
+Led the first end-to-end recommendation project. Improved click-through rate from 5% to 18% using collaborative filtering and NLP-based content similarity. Generates 300 personalized recommendations per user daily.
+
+Technical Skills:
+- Languages: Python, SQL, R
+- ML Frameworks: scikit-learn, XGBoost, PyTorch, HuggingFace
+- Tools: Docker, Airflow, Spark, dbt
+- Cloud: AWS (S3, SageMaker, Lambda)
+
+Leadership:
+I manage daily development work for 3 data scientists, define roadmaps, and coordinate with product and engineering teams. I focus on translating business problems into technical solutions and communicating results to non-technical stakeholders.
+
+Career Goal:
+I am looking to grow into a senior or lead data scientist role where I can work on more complex AI systems, particularly in the areas of NLP and large language models.
