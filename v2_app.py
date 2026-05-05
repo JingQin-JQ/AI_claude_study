@@ -170,7 +170,8 @@ with tab2:
     try:
         df = load_df(uploaded)
         df = df.dropna(axis=1, how="all").dropna(how="all").reset_index(drop=True)
-        df.iloc[:, 0] = pd.to_datetime(df.iloc[:, 0])
+        date_col = df.columns[0]
+        df[date_col] = pd.to_datetime(df[date_col])
         numeric_cols = [c for c in df.columns[1:] if pd.to_numeric(df[c], errors="coerce").notna().any()]
 
         selected = st.multiselect("选择要显示的指标（可多选）", numeric_cols)
