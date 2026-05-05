@@ -10,9 +10,12 @@ CSV_PATH = _real_csv if os.path.exists(_real_csv) else _sample_csv
 
 # ── 工具函数 ─────────────────────────────────────────────────
 
-def read_csv():
+def _load():
     df = pd.read_csv(CSV_PATH, sep=";", skiprows=1, encoding="utf-8")
-    df = df.dropna(axis=1, how="all").dropna(how="all")
+    return df.dropna(axis=1, how="all").dropna(how="all").reset_index(drop=True)
+
+def read_csv():
+    df = _load()
     return {
         "columns": list(df.columns),
         "rows": len(df),
@@ -20,8 +23,7 @@ def read_csv():
     }
 
 def get_statistics(column: str):
-    df = pd.read_csv(CSV_PATH, sep=";", skiprows=1, encoding="utf-8")
-    df = df.dropna(axis=1, how="all").dropna(how="all")
+    df = _load()
     if column not in df.columns:
         return {"error": f"列 '{column}' 不存在，可用列：{list(df.columns)}"}
     series = pd.to_numeric(df[column], errors="coerce").dropna()
@@ -35,8 +37,7 @@ def get_statistics(column: str):
     }
 
 def get_trend(column: str):
-    df = pd.read_csv(CSV_PATH, sep=";", skiprows=1, encoding="utf-8")
-    df = df.dropna(axis=1, how="all").dropna(how="all")
+    df = _load()
     if column not in df.columns:
         return {"error": f"列 '{column}' 不存在"}
     series = pd.to_numeric(df[column], errors="coerce").dropna()
