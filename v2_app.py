@@ -75,8 +75,8 @@ def get_data_summary(df, columns):
         dates = df.iloc[series.index, 0]
         lines.append(
             f"- {col}（{COL_EN.get(col, col)}）："
-            f"{dates.iloc[0].strftime('%Y-%m')} 起始值={series.iloc[0]:.1f}，"
-            f"{dates.iloc[-1].strftime('%Y-%m')} 最新值={series.iloc[-1]:.1f}，"
+            f"起始值={series.iloc[0]:.1f}（{dates.iloc[0]}），"
+            f"最新值={series.iloc[-1]:.1f}（{dates.iloc[-1]}），"
             f"总变化={series.iloc[-1] - series.iloc[0]:+.1f}，"
             f"最小={series.min():.1f}，最大={series.max():.1f}"
         )
@@ -172,7 +172,7 @@ with tab2:
         df = load_df(uploaded)
         df = df.dropna(axis=1, how="all").dropna(how="all")
         date_col = df.columns[0]
-        df[date_col] = pd.to_datetime(df[date_col])
+        df[date_col] = df[date_col].astype(str)
         df = df.sort_values(date_col).reset_index(drop=True)
         numeric_cols = [c for c in df.columns[1:] if pd.to_numeric(df[c], errors="coerce").notna().any()]
 
