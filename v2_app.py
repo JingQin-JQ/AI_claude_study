@@ -50,11 +50,13 @@ def load_df(uploaded_file=None):
     return pd.read_csv(path, sep=";", skiprows=1, encoding="utf-8")
 
 def make_chart_bytes(df, columns):
+    date_col = df.columns[0]
     fig, ax = plt.subplots(figsize=(10, 5))
     for i, col in enumerate(columns):
-        series = pd.to_numeric(df[col], errors="coerce").dropna()
-        dates = df.iloc[series.index, 0]
-        ax.plot(dates, series, marker="o", linewidth=2,
+        tmp = df[[date_col, col]].copy()
+        tmp[col] = pd.to_numeric(tmp[col], errors="coerce")
+        tmp = tmp.dropna(subset=[col])
+        ax.plot(tmp[date_col], tmp[col], marker="o", linewidth=2,
                 color=COLORS[i % len(COLORS)], label=COL_EN.get(col, col))
     title = " vs ".join(COL_EN.get(c, c) for c in columns)
     ax.set_title(f"{title} Trend", fontsize=16)
@@ -69,16 +71,20 @@ def make_chart_bytes(df, columns):
     return buf.getvalue()
 
 def get_data_summary(df, columns):
+    date_col = df.columns[0]
     lines = []
     for col in columns:
-        series = pd.to_numeric(df[col], errors="coerce").dropna()
-        dates = df.iloc[series.index, 0]
+        tmp = df[[date_col, col]].copy()
+        tmp[col] = pd.to_numeric(tmp[col], errors="coerce")
+        tmp = tmp.dropna(subset=[col])
+        if tmp.empty:
+            continue
         lines.append(
             f"- {col}（{COL_EN.get(col, col)}）："
-            f"起始值={series.iloc[0]:.1f}（{dates.iloc[0]}），"
-            f"最新值={series.iloc[-1]:.1f}（{dates.iloc[-1]}），"
-            f"总变化={series.iloc[-1] - series.iloc[0]:+.1f}，"
-            f"最小={series.min():.1f}，最大={series.max():.1f}"
+            f"起始值={tmp[col].iloc[0]:.1f}（{tmp[date_col].iloc[0]}），"
+            f"最新值={tmp[col].iloc[-1]:.1f}（{tmp[date_col].iloc[-1]}），"
+            f"总变化={tmp[col].iloc[-1] - tmp[col].iloc[0]:+.1f}，"
+            f"最小={tmp[col].min():.1f}，最大={tmp[col].max():.1f}"
         )
     return "\n".join(lines)
 
