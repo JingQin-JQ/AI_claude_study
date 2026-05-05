@@ -63,6 +63,7 @@ def make_chart_bytes(df, columns):
     ax.set_xlabel("Date")
     ax.legend()
     ax.grid(True, alpha=0.3)
+    ax.tick_params(axis='x', rotation=45)
     fig.tight_layout()
     buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=72)
