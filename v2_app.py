@@ -43,11 +43,11 @@ COL_EN = {
 
 def load_df(uploaded_file=None):
     if uploaded_file:
-        return pd.read_csv(uploaded_file, sep=";", skiprows=1, encoding="utf-8")
+        return pd.read_csv(uploaded_file, sep=";", skiprows=1, encoding="utf-8", index_col=False)
     real_csv = "/Users/jingqin/AI/减肥.csv"
     sample_csv = os.path.join(os.path.dirname(__file__), "sample_health.csv")
     path = real_csv if os.path.exists(real_csv) else sample_csv
-    return pd.read_csv(path, sep=";", skiprows=1, encoding="utf-8")
+    return pd.read_csv(path, sep=";", skiprows=1, encoding="utf-8", index_col=False)
 
 def make_chart_bytes(df, columns):
     date_col = df.columns[0]

@@ -11,7 +11,7 @@ CSV_PATH = _real_csv if os.path.exists(_real_csv) else _sample_csv
 # ── 工具函数 ─────────────────────────────────────────────────
 
 def _load():
-    df = pd.read_csv(CSV_PATH, sep=";", skiprows=1, encoding="utf-8")
+    df = pd.read_csv(CSV_PATH, sep=";", skiprows=1, encoding="utf-8", index_col=False)
     return df.dropna(axis=1, how="all").dropna(how="all").reset_index(drop=True)
 
 def read_csv():
