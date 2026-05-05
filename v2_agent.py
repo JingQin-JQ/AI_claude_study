@@ -27,7 +27,7 @@ def save_memory(memory: dict) -> None:
     with open(MEMORY_PATH, "w", encoding="utf-8") as f:
         json.dump(memory, f, ensure_ascii=False, indent=2)
 
-def build_system_prompt(memory: dict) -> str:
+def build_system_prompt(memory: dict) -> list:
     prompt = "你是一个私人助手，可以查询用户的身体健康数据和面试准备文档。用中文回答。当用户提到身高、体重目标、名字等个人固定信息时，立刻调用 save_fact 工具保存，不需要征得用户同意。"
 
     if memory["facts"]:
@@ -38,7 +38,8 @@ def build_system_prompt(memory: dict) -> str:
         last = memory["sessions"][-1]
         prompt += f"\n\n上次对话（{last['date']}）：{last['summary']}"
 
-    return prompt
+    # cache_control 告诉 Anthropic 缓存这段内容，5分钟内重复调用只收 10% 费用
+    return [{"type": "text", "text": prompt, "cache_control": {"type": "ephemeral"}}]
 
 def summarize_session(messages: list) -> str:
     conversation = "\n".join(
@@ -185,7 +186,8 @@ def chat(user_message: str, memory: dict) -> None:
             for block in response.content:
                 if hasattr(block, "text"):
                     print(f"\n{block.text}\n")
-            print(f"[token：输入 {response.usage.input_tokens} / 输出 {response.usage.output_tokens}]")
+            cache_hit = getattr(response.usage, 'cache_read_input_tokens', 0)
+            print(f"[token：输入 {response.usage.input_tokens} / 输出 {response.usage.output_tokens} / 缓存命中 {cache_hit}]")
             messages.append({"role": "assistant", "content": response.content})
             break
 
