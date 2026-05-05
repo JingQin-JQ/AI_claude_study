@@ -191,10 +191,6 @@ with tab2:
                 st.session_state.chart_fig_bytes = img_bytes
             summary = get_data_summary(df, selected)
             st.session_state.chart_data_summary = summary
-            with st.expander("发给 Claude 的数据"):
-                st.text(f"列名：{df.columns.tolist()}")
-                st.dataframe(df.head(3))
-                st.text(summary)
             with st.spinner("Claude 分析中..."):
                 analysis = ask_claude_chart(
                     img_bytes,
